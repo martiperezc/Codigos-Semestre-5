@@ -1,22 +1,30 @@
-%Definimos nuestros parametros iniciales
+% 1. Parámetros de la señal
+A = 170;                              % Amplitud
+f = 60;                             % Frecuencia (10 Hz)
+w = 2 * pi * f;                     % Frecuencia angular (rad/s)
+T = 1 / f;                          % Periodo (0.1 s)
 
-A = 170;
-f = 60;
-w = 2*pi*f;
-%Creamos nuestro vector tiempo
+% 2. Base de tiempo continuo (muestreo denso y suave)
+t_cont = 0 : 0.0001 : 2*T;          
+y_cont = A * sin(w*t_cont);
 
-t= 0:0.0001 : 2*(1/f); %Definimos cuantos periodos queremos mostrar (2)
+% 3. Base de tiempo discreto (muestreo a intervalos Ts fijos)
+Fs = 600;                           % Frecuencia de muestreo (600 Hz = 60 muestras/ciclo)
+Ts = 1 / Fs;                        % Periodo de muestreo
+t_disc = 0 : Ts : 2*T;              % Instantes de muestreo n*Ts
+y_disc = A * cos(w*t_disc);
 
-%Definimos las ecuaciones para las funciones
-
-y_sen = A *sin(w*t);
-y_cos = A *cos(w*t + deg2rad(30));
-
-%Mostramos la gráficas:
-plot(t,y_sen, 'b', t, y_cos, 'r--', 'LineWidth', 1.5);
+% 4. Gráfica 1: Tiempo continuo
+subplot(2, 1, 1);
+plot(t_cont, y_cont, 'b', 'LineWidth', 1.5);
 grid on;
-legend('Seno', 'Cos(-90)');
-xlabel('Tiempo(s)');
-ylabel('Amplitud');
+title('Sen(t)');
+xlabel('Tiempo [s]'); ylabel('Amplitud');
 
+% 5. Gráfica 2: Tiempo discreto
+subplot(2, 1, 2);
+stem(t_disc, y_disc, 'r', 'filled', 'LineWidth', 1.2);
+grid on;
+title('Sen[n]');
+xlabel('Tiempo [s]'); ylabel('Amplitud');
 
